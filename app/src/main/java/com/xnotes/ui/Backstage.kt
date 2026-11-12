@@ -576,7 +576,7 @@ private fun BackstageMain(
             when (view) {
                 BackstageView.HOME -> HomePane(editor, calls, createMode, onCreateMode, sidebarOpen, onShowSidebar, link)
                 BackstageView.PREFERENCES -> PreferencesPane(editor, compact, sidebarOpen, onShowSidebar, onBackToHome, onImportCodeTheme, onImportFont, onBackup)
-                BackstageView.TRASH -> TrashPane(editor, sidebarOpen, onShowSidebar, onOpenPreferences)
+                BackstageView.TRASH -> TrashPane(editor, sidebarOpen, onShowSidebar, {})
                 BackstageView.ABOUT -> AboutPane()
             }
         }
@@ -1097,14 +1097,14 @@ private fun ExplorerSection(
     val withCreated: (BrowseEntry) -> BrowseEntry = { e -> editor.createdOf(e).let { if (it == e.created) e else e.copy(created = it) } }
     val arrange: (List<BrowseEntry>) -> List<BrowseEntry> = remember(view.sortKey, view.descending, view.folders, kindFilter, metaTick) {
         { list ->
-            list.filter { e -> if (e.isDir) view.folders != FolderPlacement.HIDDEN && kindFilter == null else kindFilter == null || kindOf(e) == kindFilter }
+            list.filter { e -> if (e.isDir) view.folders != FolderPlacement.HIDDEN && kindFilter == null else kindOf(e) != EntryKind.CANVAS && (kindFilter == null || kindOf(e) == kindFilter) }
                 .map(withCreated)
                 .sortedWith(explorerComparator(view.sortKey, view.descending, foldersFirst = view.folders != FolderPlacement.MIXED) { it.created })
         }
     }
     // Recent keeps the order things were opened in.
     val arranged = remember(source, arrange, showRecent) {
-        if (showRecent) source?.filter { kindFilter == null || kindOf(it) == kindFilter } else source?.let(arrange)
+        if (showRecent) source?.filter { kindOf(it) != EntryKind.CANVAS && (kindFilter == null || kindOf(it) == kindFilter) } else source?.let(arrange)
     }
     // Columns are how one gets around in that layout, so their folders stay whatever the placement says.
     val columnsArrange: (List<BrowseEntry>) -> List<BrowseEntry> = remember(view.sortKey, view.descending, kindFilter, metaTick) {
@@ -1431,7 +1431,7 @@ private fun ExplorerSection(
                             val k = kindFilter
                             ExplorerChip(k?.let { words.kinds(it) } ?: stringResource(R.string.all_kinds), k != null, icon = XnotesIcons.filter, trailing = XnotesIcons.chevronDown, labelled = labelled) { kindOpen = true }
                             DropdownMenu(expanded = kindOpen, onDismissRequest = { kindOpen = false }) {
-                                (listOf<EntryKind?>(null) + listOf(EntryKind.NOTE, EntryKind.PDF, EntryKind.CANVAS)).forEach { option ->
+                                (listOf<EntryKind?>(null) + listOf(EntryKind.NOTE, EntryKind.PDF)).forEach { option ->
                                     ChoiceMenuItem(option == kindFilter, onClick = { kindOpen = false; kindFilter = option }) { fg ->
                                         Text(option?.let { words.kinds(it) } ?: stringResource(R.string.all_kinds), color = fg)
                                     }

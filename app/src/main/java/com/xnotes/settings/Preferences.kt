@@ -12,15 +12,15 @@ import org.json.JSONObject
  * field falls back to its default if missing or malformed.
  */
 data class Preferences(
-    val uiAppearance: String = "system", // "system" (follows OS dark/light) | "dark" | "light" | "oled"
+    val uiAppearance: String = "oled", // "system" (follows OS dark/light) | "dark" | "light" | "oled"
     val materialMode: MaterialColourMode = MaterialColourMode.DUAL,
     val materialSingleSeed: Rgba = DEFAULT_MATERIAL_SINGLE,
     val materialDualSeed: Rgba = DEFAULT_MATERIAL_DUAL,
-    val materialStyle: MaterialStyle = MaterialStyle.TONAL_SPOT,
+    val materialStyle: MaterialStyle = MaterialStyle.MONOCHROME,
     /** Material contrast level, -1 (reduced) .. 0 (standard) .. 1 (high). */
     val materialContrast: Double = 0.0,
     val materialSurfaceSeed: Rgba = DEFAULT_MATERIAL_SURFACE,
-    val cornerStyle: CornerStyle = CornerStyle.ROUNDED,
+    val cornerStyle: CornerStyle = CornerStyle.SOFT,
     val toolbarLook: ToolbarLook = ToolbarLook(),
     val hideWindowDecoration: Boolean = false,
     val pageColor: Rgba? = null, // null ⇒ follow theme paper
@@ -80,7 +80,7 @@ data class Preferences(
     /** Whether wet ink keeps off the front buffer, so every stroke takes the ordinary canvas path. */
     val disableFrontBuffering: Boolean = false,
     /** Open in fullscreen; null ⇒ auto (on unless the display has a camera cutout). */
-    val startFullscreen: Boolean? = null,
+    val startFullscreen: Boolean? = true,
     /** An imported Helix code theme's file path, or null for the built-in colours. */
     val codeThemePath: String? = null,
     /** The imported code theme's original file name, shown in preferences. */

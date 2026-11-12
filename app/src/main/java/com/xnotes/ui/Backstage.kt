@@ -1788,18 +1788,7 @@ private fun ExplorerSection(
                 }
             }
         }
-        CreateButton(
-            exporting = selection.isNotEmpty(),
-            onCreateMode = onCreateMode,
-            onImportPdf = calls.importPdf,
-            onExport = {
-                val picked = selection.toList()
-                // A lone folder zips under its own name, anything else under the folder it was picked in.
-                val name = picked.singleOrNull()?.takeIf { it.isDir }?.name ?: stack.lastOrNull()?.second ?: rootName ?: context.getString(R.string.folder)
-                calls.exportPdfs(picked, name) { selection.clear() }
-            },
-            modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp),
-        )
+        // Quick-create FAB removed; PDF import and folder creation remain in the explorer menu.
     }
 
     // A multi-file pick gets no name prompt: it imports straight into the folder on screen, one file

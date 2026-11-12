@@ -2753,6 +2753,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
         selectTool(Tool.PAN)
         pushToolsToCanvas()
         applyPagePrefsToState(readerPrefs)
+        onViewSettingsChanged(com.xnotes.canvas.ViewSettings(), readerView)
     }
 
     /** The appearance mode to render: "system" follows the OS dark/light state. */

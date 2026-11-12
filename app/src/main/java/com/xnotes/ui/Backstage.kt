@@ -1109,7 +1109,7 @@ private fun ExplorerSection(
     // Columns are how one gets around in that layout, so their folders stay whatever the placement says.
     val columnsArrange: (List<BrowseEntry>) -> List<BrowseEntry> = remember(view.sortKey, view.descending, kindFilter, metaTick) {
         { list ->
-            list.filter { e -> e.isDir || kindFilter == null || kindOf(e) == kindFilter }
+            list.filter { e -> e.isDir || (kindOf(e) != EntryKind.CANVAS && (kindFilter == null || kindOf(e) == kindFilter)) }
                 .map(withCreated)
                 .sortedWith(explorerComparator(view.sortKey, view.descending) { it.created })
         }

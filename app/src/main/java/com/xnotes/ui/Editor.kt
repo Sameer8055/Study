@@ -2711,6 +2711,17 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
             materialContrast = 0.0,
             cornerStyle = CornerStyle.SOFT,
             startFullscreen = true,
+            fingerDraws = false,
+            detectShapes = false,
+            penButtonTool = "none",
+            penButtonHover = false,
+            twoFingerTap = "none",
+            threeFingerTap = "none",
+            stylusDoubleTap = "none",
+            stylusButtonTap = "none",
+            stylusButton1Tap = "none",
+            stylusButton2Tap = "none",
+            volumeKeysTurnPages = true,
         )
         val readerView = settings.viewDefaults.copy(
             mode = com.xnotes.canvas.ViewingMode.SINGLE,
@@ -2739,7 +2750,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
         controller.shapeConfig = settings.shapeConfig
         for (t in ToolDefaults.persistedTools) controller.setToolConfig(t, settings.configFor(t))
         controller.inkColor = toolbarColors[activeColorIndex]
-        selectTool(settings.lastTool)
+        selectTool(Tool.PAN)
         pushToolsToCanvas()
         applyPagePrefsToState(readerPrefs)
     }

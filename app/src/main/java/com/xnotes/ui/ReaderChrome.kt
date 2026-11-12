@@ -141,7 +141,7 @@ private fun ReaderPageThumbnail(
     Column(
         Modifier
             .background(
-                if (selected) palette.accent.copy(alpha = 0.18f).toComposeColor()
+                if (selected) palette.accent.toComposeColor().copy(alpha = 0.18f)
                 else palette.surface.toComposeColor(),
                 MaterialTheme.shapes.small,
             )
@@ -152,9 +152,9 @@ private fun ReaderPageThumbnail(
         if (thumb != null) {
             Image(
                 bitmap = thumb,
-                contentDescription = stringResource(R.string.page_number, index + 1),
+                contentDescription = "Page ${index + 1}",
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize().height(104.dp),
+                modifier = Modifier.fillMaxWidth().height(104.dp),
             )
         } else {
             Box(Modifier.fillMaxSize().height(104.dp), contentAlignment = Alignment.Center) {

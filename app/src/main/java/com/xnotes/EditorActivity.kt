@@ -95,8 +95,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.xnotes.R
 import com.xnotes.canvas.StylusButtonLatch
 import com.xnotes.ui.Editor
-import com.xnotes.ui.Toolbar
-import com.xnotes.ui.ToolbarAround
 import com.xnotes.ui.icons.XnotesIcons
 import com.xnotes.ui.theme.LocalPalette
 import com.xnotes.ui.theme.XnotesTheme
@@ -1447,53 +1445,15 @@ private fun EditorPane(
                         .background((if (focused) palette.accent else palette.border).toComposeColor()),
                 )
             }
-            if (editor.canvasOpen) {
-                val canvas = editor.infinite
-                val bar: @Composable () -> Unit = {
-                    com.xnotes.ui.InfiniteToolbar(
-                        canvas,
-                        onOpenBackstage = actions.onOpenBackstage,
-                        onInsertImage = { actions.onInsertCanvasImage(editor, null) },
-                        onClosePane = onClose,
-                        onInsertAudio = { actions.onInsertAudio(editor) },
-                        onRecordAudio = { actions.onRecordAudio(editor) },
-                        onTakePhoto = { actions.onTakePhoto(editor) },
-                    )
-                }
-                ToolbarAround(bar, onCover = canvas::setToolbarCover) { floatingBar ->
-                    Box(modifier = Modifier.fillMaxSize().clipToBounds()) {
-                        AndroidView(
-                            factory = { detached(canvas.surfaces) },
-                            modifier = Modifier.fillMaxSize(),
-                            update = { canvas.view.publish() },
-                        )
-                        canvas.editingField?.let { field ->
-                            com.xnotes.ui.TextEditorOverlay(canvas, field)
-                        }
-                        floatingBar()
-                        com.xnotes.ui.SelectionMenu(
-                            canvas,
-                            onSaveAudio = { actions.onSaveAudio(editor, it) },
-                            onShareAudio = { actions.onShareAudio(editor, it) },
-                            onShareImage = actions.onShareImage,
-                        )
-                        com.xnotes.ui.CropOverlay(canvas)
-                        com.xnotes.ui.TextStyleBar(canvas)
-                        com.xnotes.ui.LongPressMenu(canvas, onInsertImageAt = { c -> actions.onInsertCanvasImage(editor, c) })
-                        com.xnotes.ui.CanvasDebugOverlay(canvas)
-                    }
-                }
-            } else {
-                // Dedicated PDF-reader surface: no drawing, annotation, text-editing or note toolbar.
-                Box(Modifier.fillMaxSize().clipToBounds()) {
-                    AndroidView(
-                        factory = { detached(editor.surfaces) },
-                        modifier = Modifier.fillMaxSize(),
-                        update = { editor.view.requestRender() },
-                    )
-                    com.xnotes.ui.PdfSelectionMenu(editor)
-                    com.xnotes.ui.ReaderChrome(editor, onHome = actions.onOpenBackstage)
-                }
+            // Dedicated PDF-reader surface. Infinite canvas and all editing overlays are removed.
+            Box(Modifier.fillMaxSize().clipToBounds()) {
+                AndroidView(
+                    factory = { detached(editor.surfaces) },
+                    modifier = Modifier.fillMaxSize(),
+                    update = { editor.view.requestRender() },
+                )
+                com.xnotes.ui.PdfSelectionMenu(editor)
+                com.xnotes.ui.ReaderChrome(editor, onHome = actions.onOpenBackstage)
             }
         }
     }

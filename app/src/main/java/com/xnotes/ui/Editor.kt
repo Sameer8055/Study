@@ -5450,7 +5450,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
      */
     private fun installInitialView(path: String?) {
         val saved = viewKey(path)?.let { viewStates.get(it) }
-        installViewOverrides(saved?.overrides ?: com.xnotes.canvas.ViewOverrides())
+        installViewOverrides(com.xnotes.canvas.ViewOverrides()) // never restore note-editing view overrides in the reader
         state.pendingInitialView =
             if (saved != null) InitialView.Restore(saved.zoom, saved.scrollX, saved.scrollY) else InitialView.FitWidth
         state.didInitialFit = false

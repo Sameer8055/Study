@@ -1482,71 +1482,18 @@ private fun EditorPane(
                     }
                 }
             } else {
-                val bar: @Composable () -> Unit = {
-                    Box(Modifier.endsPageSelection(editor)) { Toolbar(
-                        editor,
-                        onToggleFullscreen = actions.onToggleFullscreen,
-                        onOpenBackstage = actions.onOpenBackstage,
-                        onInsertImage = { actions.onInsertImage(editor, null) },
-                        onAddStickers = actions.onAddStickers,
-                        onClosePane = onClose,
-                        onImportTemplate = actions.onImportTemplate,
-                        onInsertAudio = { actions.onInsertAudio(editor) },
-                        onRecordAudio = { actions.onRecordAudio(editor) },
-                        onTakePhoto = { actions.onTakePhoto(editor) },
-                    ) }
+                // Dedicated PDF-reader surface: no drawing, annotation, text-editing or note toolbar.
+                Box(Modifier.fillMaxSize().clipToBounds()) {
+                    AndroidView(
+                        factory = { detached(editor.surfaces) },
+                        modifier = Modifier.fillMaxSize(),
+                        update = { editor.view.requestRender() },
+                    )
+                    com.xnotes.ui.PdfSelectionMenu(editor)
+                    com.xnotes.ui.ReaderChrome(editor, onHome = actions.onOpenBackstage)
                 }
-                ToolbarAround(bar, onCover = editor::setToolbarCover) { floatingBar ->
-                    Row(modifier = Modifier.fillMaxSize()) {
-                        if (editor.sidebarVisible) {
-                            com.xnotes.ui.SidePanel(
-                                editor,
-                                onSharePages = { pages, asPdf -> actions.onSharePages(editor, pages, asPdf) },
-                                onSavePagesAsPdf = { pages -> actions.onSavePagesAsPdf(editor, pages) },
-                                onSavePagesAsImages = { pages -> actions.onSavePagesAsImages(editor, pages) },
-                                onInsertPdf = { after -> actions.onInsertPdf(editor, after) },
-                                onImportTemplate = actions.onImportTemplate,
-                                onTemplateFromImage = actions.onTemplateFromImage,
-                            )
-                        }
-                        Box(modifier = Modifier.weight(1f).fillMaxHeight().clipToBounds().endsPageSelection(editor)) {
-                            AndroidView(
-                                factory = { detached(editor.surfaces) },
-                                modifier = Modifier.fillMaxSize(),
-                                update = { editor.view.requestRender() }, // repaint on (re)attach so a push never flashes blank
-                            )
-                            editor.editingField?.let { field ->
-                                com.xnotes.ui.TextEditorOverlay(editor, field)
-                            }
-                            floatingBar()
-                            com.xnotes.ui.SelectionMenu(
-                                editor,
-                                onSaveAudio = { actions.onSaveAudio(editor, it) },
-                                onShareAudio = { actions.onShareAudio(editor, it) },
-                                onShareImage = actions.onShareImage,
-                            )
-                            com.xnotes.ui.CropOverlay(editor)
-                            com.xnotes.ui.ScreenshotMenu(editor, onShare = actions.onShareImage)
-                            com.xnotes.ui.TextStyleBar(editor)
-                            com.xnotes.ui.LongPressMenu(editor, onInsertImageAt = { c -> actions.onInsertImage(editor, c) })
-                            com.xnotes.ui.FlowEditMenu(editor)
-                            com.xnotes.ui.PdfSelectionMenu(editor)
-                            com.xnotes.ui.MarkupNotePeek(editor)
-                            com.xnotes.ui.MarkupMenu(editor)
-                            com.xnotes.ui.MarkupNoteDialog(editor)
-                            com.xnotes.ui.SlashMenu(editor)
-                            com.xnotes.ui.EmojiMenu(editor)
-                            com.xnotes.ui.FlowTableMenu(editor)
-                            com.xnotes.ui.TableChrome(editor)
-                            ZoomLockHint(editor)
-                        }
-                    }
-                }
-                // Last child of the resized column: rides directly above the soft keyboard.
-                com.xnotes.ui.TextFormatBar(editor)
             }
         }
-        com.xnotes.ui.ColorDropOverlay(if (editor.canvasOpen) editor.infinite else editor)
     }
 }
 

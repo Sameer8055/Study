@@ -402,9 +402,10 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
      * The two surfaces, in order. The pad is a sibling above the canvas rather than part of it: the
      * canvas paints into the window and the front buffer has to be a surface of its own.
      */
+    // Reader-only build: do not attach the transparent GL wet-ink surface.
+    // The PDF canvas remains the sole visible rendering surface.
     val surfaces = android.widget.FrameLayout(context).apply {
         addView(view, android.widget.FrameLayout.LayoutParams(-1, -1))
-        addView(pad, android.widget.FrameLayout.LayoutParams(-1, -1))
     }
     private val textMeasurer = AndroidTextMeasurer()
     private val imageCodec = AndroidImageCodec()

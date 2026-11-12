@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Minimal document silhouette for themed launcher icons. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M31,17 L64,17 L78,31 L78,91 L31,91 Z" />
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="4"
+        android:pathData="M54,8 A46,46 0,1 1,53.9 8" />
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="8"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M72,29 C68,22 59,20 50,22 C38,25 34,34 39,42 C43,49 55,52 65,57 C77,63 78,74 69,81 C60,89 43,86 35,78" />
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="3"
+        android:pathData="M22,78 C33,75 44,79 54,91 C64,79 75,75 86,78" />
 </vector>

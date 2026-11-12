@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Xnotes" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.Study" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/window_bg</item>
         <item name="android:statusBarColor">@color/window_bg</item>
         <item name="android:navigationBarColor">@color/window_bg</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <!-- Launch theme: Android's own splash on the launch stage. Swapped for Theme.Xnotes in EditorActivity.onCreate. -->
-    <style name="Theme.Xnotes.Splash" parent="Theme.Xnotes">
+    <!-- Launch theme: Android's own splash on the launch stage. Swapped for Theme.Study in EditorActivity.onCreate. -->
+    <style name="Theme.Study.Splash" parent="Theme.Study">
         <item name="android:windowBackground">@color/launch_stage</item>
         <item name="android:statusBarColor">@color/launch_stage</item>
         <item name="android:navigationBarColor">@color/launch_stage</item>

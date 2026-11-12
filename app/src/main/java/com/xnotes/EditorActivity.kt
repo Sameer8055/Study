@@ -872,16 +872,11 @@ private fun EditorScreen(
     // Every shortcut acts on the focused pane, so the same KeyActions serve both of them.
     editor.keyActions = remember {
         Editor.KeyActions(
-            newNote = { guarded { editor.active.newNote() } },
+            newNote = {},
             open = { backstageView = com.xnotes.ui.BackstageView.HOME; guardedAll { editor.goHomeAll() } },
-            save = { saveOrPrompt() },
-            saveAs = { launchSaveAs(editor.active) },
-            exportPdf = {
-                val from = editor.active
-                runPdfExport(from.title, shareDir = false,
-                    render = { o, prog, cancel -> from.exportPdf(o, prog, cancel) },
-                    onReady = { temp -> pendingExportTemp = temp; savePdfLauncher.launch("${from.title}.pdf") })
-            },
+            save = {},
+            saveAs = {},
+            exportPdf = {},
             preferences = {},
             fullscreen = onToggleFullscreen,
         )

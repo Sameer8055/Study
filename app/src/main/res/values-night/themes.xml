@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The launch theme by night: the dark launch stage, with light bar icons on it. -->
-    <style name="Theme.Xnotes.Splash" parent="Theme.Xnotes">
+    <style name="Theme.Study.Splash" parent="Theme.Study">
         <item name="android:windowBackground">@color/launch_stage</item>
         <item name="android:statusBarColor">@color/launch_stage</item>
         <item name="android:navigationBarColor">@color/launch_stage</item>

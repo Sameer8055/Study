@@ -880,7 +880,7 @@ private fun EditorScreen(
                     render = { o, prog, cancel -> from.exportPdf(o, prog, cancel) },
                     onReady = { temp -> pendingExportTemp = temp; savePdfLauncher.launch("${from.title}.pdf") })
             },
-            preferences = { backstageView = com.xnotes.ui.BackstageView.PREFERENCES; guardedAll { editor.goHomeAll() } },
+            preferences = {},
             fullscreen = onToggleFullscreen,
         )
     }

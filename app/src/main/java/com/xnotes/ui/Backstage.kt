@@ -164,7 +164,7 @@ import kotlinx.coroutines.withTimeout
 import kotlin.math.roundToInt
 
 /** Which pane the backstage shows on the right. */
-enum class BackstageView { HOME, PREFERENCES, ABOUT, TRASH }
+enum class BackstageView { HOME, PREFERENCES, TRASH }
 
 /** Whether the Home explorer is awaiting a new file/folder name. */
 private enum class CreateMode { NONE, FILE, CANVAS, FOLDER }
@@ -490,7 +490,6 @@ private fun BackstageSidebar(modifier: Modifier, nav: SidebarNav, onCollapse: ()
                 nav.onSelectView(BackstageView.TRASH)
             }
         }
-        Command(XnotesIcons.info, stringResource(R.string.about), selected = nav.view == BackstageView.ABOUT) { nav.onSelectView(BackstageView.ABOUT) }
     }
 }
 
@@ -525,7 +524,6 @@ private fun BackstageRail(modifier: Modifier, nav: SidebarNav, onExpand: () -> U
             }
         }
         if (nav.trashCount >= 0) RailItem(XnotesIcons.trash, stringResource(R.string.trash), selected = nav.view == BackstageView.TRASH) { nav.onSelectView(BackstageView.TRASH) }
-        RailItem(XnotesIcons.info, stringResource(R.string.about), selected = nav.view == BackstageView.ABOUT) { nav.onSelectView(BackstageView.ABOUT) }
     }
 }
 
@@ -550,34 +548,11 @@ private fun BackstageMain(
 ) {
     val palette = LocalPalette.current
     Column(modifier) {
-        // About's slim top bar (constant height so toggling the sidebar never shifts it) holds the
-        // same leading control as Home/Preferences: a Back arrow to Home on compact, else a hamburger.
-        if (view == BackstageView.ABOUT) {
-            Box(
-                Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 6.dp, end = 12.dp),
-                contentAlignment = Alignment.CenterStart,
-            ) {
-                if (compact) {
-                    Tooltip(stringResource(R.string.back_to_home)) {
-                        IconButton(onClick = onBackToHome) {
-                            Icon(XnotesIcons.prev, stringResource(R.string.back_to_home), tint = palette.text.toComposeColor(), modifier = Modifier.size(24.dp))
-                        }
-                    }
-                } else if (!sidebarOpen) {
-                    Tooltip(stringResource(R.string.show_sidebar)) {
-                        IconButton(onClick = onShowSidebar) {
-                            Icon(XnotesIcons.menu, stringResource(R.string.show_sidebar), tint = palette.text.toComposeColor(), modifier = Modifier.size(24.dp))
-                        }
-                    }
-                }
-            }
-        }
         Box(Modifier.weight(1f).fillMaxWidth().padding(start = PANE_GUTTER, end = PANE_GUTTER, top = 4.dp, bottom = 12.dp)) {
             when (view) {
                 BackstageView.HOME -> HomePane(editor, calls, createMode, onCreateMode, sidebarOpen, onShowSidebar, link)
                 BackstageView.PREFERENCES -> PreferencesPane(editor, compact, sidebarOpen, onShowSidebar, onBackToHome, onImportCodeTheme, onImportFont, onBackup)
                 BackstageView.TRASH -> TrashPane(editor, sidebarOpen, onShowSidebar, {})
-                BackstageView.ABOUT -> AboutPane()
             }
         }
     }
@@ -858,7 +833,7 @@ private fun CreateButton(
                 text = { Text(exportLabel) },
                 icon = {
                     Crossfade(exporting, label = "createButtonIcon") { e ->
-                        Icon(if (e) XnotesIcons.pdfFile else XnotesIcons.edit, if (e) exportLabel else createLabel, Modifier.size(24.dp))
+                        Icon(if (e) XnotesIcons.pdfFile else XnotesIcons.plus, if (e) exportLabel else createLabel, Modifier.size(24.dp))
                     }
                 },
                 onClick = { if (exporting) onExport() else menuOpen = true },

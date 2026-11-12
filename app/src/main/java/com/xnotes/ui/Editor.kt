@@ -2703,7 +2703,28 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
     }
 
     private fun applySettings() {
-        swatchesDark = resolvedAppearance(settings.prefs) != "light"
+        // This fork is a dedicated PDF reader: lock the reader defaults even when upgrading
+        // an installation that previously saved handwriting-oriented preferences.
+        val readerPrefs = settings.prefs.copy(
+            uiAppearance = "oled",
+            materialStyle = com.xnotes.settings.MaterialStyle.MONOCHROME,
+            materialContrast = 0.0,
+            cornerStyle = CornerStyle.SOFT,
+            startFullscreen = true,
+        )
+        val readerView = settings.viewDefaults.copy(
+            mode = com.xnotes.canvas.ViewingMode.SINGLE,
+            verticalScroll = false,
+            freeMovement = true,
+        )
+        if (settings.prefs != readerPrefs || settings.viewDefaults != readerView) {
+            settings = settings.copy(prefs = readerPrefs, viewDefaults = readerView)
+            settingsRepo.save(settings)
+        }
+        viewDefaults = readerView
+        viewSettings = readerView
+        fullscreen = true
+        swatchesDark = resolvedAppearance(readerPrefs) != "light"
         toolbarColors = settings.toolbarColors(swatchesDark)
         otherSwatches = settings.toolbarColors(!swatchesDark)
         toolbarColorCount = settings.toolbarColorCount
@@ -2720,7 +2741,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
         controller.inkColor = toolbarColors[activeColorIndex]
         selectTool(settings.lastTool)
         pushToolsToCanvas()
-        applyPagePrefsToState(settings.prefs)
+        applyPagePrefsToState(readerPrefs)
     }
 
     /** The appearance mode to render: "system" follows the OS dark/light state. */

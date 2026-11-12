@@ -2,6 +2,7 @@ package com.xnotes.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,10 +42,12 @@ import com.xnotes.ui.theme.toComposeColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/** Minimal reader controls: home/page-preview on the left, page navigation on the right. */
+/** Reader controls use lightly translucent glass surfaces while preserving the original layout. */
 @Composable
 internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
     val palette = LocalPalette.current
+    val glass = palette.panel.toComposeColor().copy(alpha = 0.62f)
+    val edge = palette.border.toComposeColor().copy(alpha = 0.46f)
     Box(Modifier.fillMaxSize()) {
         Row(
             Modifier.align(Alignment.BottomStart).padding(start = 12.dp, bottom = 14.dp),
@@ -52,9 +55,10 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Surface(
+                modifier = Modifier.border(1.dp, edge, MaterialTheme.shapes.extraLarge),
                 shape = MaterialTheme.shapes.extraLarge,
-                color = palette.panel.toComposeColor(),
-                shadowElevation = 6.dp,
+                color = glass,
+                shadowElevation = 8.dp,
                 tonalElevation = 0.dp,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -63,7 +67,7 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
                     }
                     IconButton(onClick = editor::toggleSidebar) {
                         Icon(
-                            XnotesIcons.sidebar,
+                            XnotesIcons.thumbnails,
                             stringResource(R.string.pages),
                             tint = if (editor.sidebarVisible) palette.accent.toComposeColor() else palette.text.toComposeColor(),
                         )
@@ -72,10 +76,11 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
             }
         }
         Surface(
-            Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp),
+            Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp)
+                .border(1.dp, edge, MaterialTheme.shapes.extraLarge),
             shape = MaterialTheme.shapes.extraLarge,
-            color = palette.panel.toComposeColor(),
-            shadowElevation = 6.dp,
+            color = glass,
+            shadowElevation = 8.dp,
             tonalElevation = 0.dp,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -99,7 +104,7 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
     }
 }
 
-/** Read-only page thumbnails. No page insertion, editing, deletion, or rearrangement actions. */
+/** Read-only page thumbnails; cached page rendering stays off the UI thread. */
 @Composable
 private fun ReaderPagePreview(editor: Editor, modifier: Modifier = Modifier) {
     val palette = LocalPalette.current
@@ -107,8 +112,8 @@ private fun ReaderPagePreview(editor: Editor, modifier: Modifier = Modifier) {
     Surface(
         modifier.width(132.dp).fillMaxHeight(0.68f),
         shape = MaterialTheme.shapes.large,
-        color = palette.panel.toComposeColor(),
-        shadowElevation = 8.dp,
+        color = palette.panel.toComposeColor().copy(alpha = 0.88f),
+        shadowElevation = 10.dp,
         tonalElevation = 0.dp,
     ) {
         LazyColumn(
@@ -160,7 +165,7 @@ private fun ReaderPageThumbnail(
                 modifier = Modifier.fillMaxWidth().height(104.dp),
             )
         } else {
-            Box(Modifier.fillMaxSize().height(104.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(104.dp), contentAlignment = Alignment.Center) {
                 Text((index + 1).toString(), color = palette.textDim.toComposeColor(), fontSize = 12.sp)
             }
         }

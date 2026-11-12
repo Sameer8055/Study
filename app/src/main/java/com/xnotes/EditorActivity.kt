@@ -150,6 +150,8 @@ class EditorActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         com.xnotes.platform.FontCatalog.init(this)
         com.xnotes.platform.TemplateLibrary.init(this)
+        com.xnotes.ui.AudioPlayback.init(this)
+        com.xnotes.ui.AudioRecording.init(this)
         setTheme(com.xnotes.R.style.Theme_Xnotes) // use the plain reader theme
         applyFullscreen(true) // PDF reader starts fullscreen by default
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

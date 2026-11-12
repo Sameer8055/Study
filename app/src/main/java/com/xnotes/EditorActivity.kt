@@ -153,12 +153,9 @@ class EditorActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        com.xnotes.platform.FontCatalog.init(this)
-        com.xnotes.platform.TemplateLibrary.init(this)
-        com.xnotes.ui.AudioPlayback.init(this)
-        com.xnotes.ui.AudioRecording.init(this)
         setTheme(com.xnotes.R.style.Theme_Xnotes) // leave the launch theme behind
-        applyFullscreen(!deviceHasDisplayCutout(this)) // provisional; reconciled once the editor loads prefs
+        applyFullscreen(true) // PDF reader starts fullscreen by default
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // The intent that started the task comes back whenever Android rebuilds it, from a saved state
         // or from Recents after the process died or the app was updated; it was handled the first time.
         val rebuilt = savedInstanceState != null || (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
@@ -169,9 +166,9 @@ class EditorActivity : ComponentActivity() {
             LaunchedEffect(ed.fullscreen) { applyFullscreen(ed.fullscreen) }
             var ready by remember { mutableStateOf(false) }
             LaunchedEffect(Unit) {
-                ed.restoreSession() // heavy load off-thread; the system splash stays up meanwhile
-                ready = true
-                ed.prewarmBackstage() // warm recents/explorer caches so the first backstage open is instant
+                if (ed.browseRoot == null) ed.useInternalStorage() // use app storage by default; no first-run folder prompt
+                ready = true // show Home immediately; do not restore an editing/canvas session
+                ed.prewarmBackstage() // warm explorer caches after the first frame
             }
             XnotesTheme(ed.palette, ed.cornerStyle) {
                 CompositionLocalProvider(com.xnotes.ui.LocalToolbarLook provides ed.toolbarLook) {

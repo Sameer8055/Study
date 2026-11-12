@@ -3039,7 +3039,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
             // Prefer this note's own remembered view (folder notes); fall back to the session's
             // saved view for a non-folder/unsaved note; otherwise fit width.
             val saved = viewKey(snap.document.path)?.let { viewStates.get(it) }
-            installViewOverrides(saved?.overrides ?: snap.viewOverrides)
+            installViewOverrides(com.xnotes.canvas.ViewOverrides())
             state.pendingInitialView = when {
                 saved != null -> InitialView.Restore(saved.zoom, saved.scrollX, saved.scrollY)
                 snap.zoom > 0.0 -> InitialView.Restore(snap.zoom, snap.scrollX, snap.scrollY)

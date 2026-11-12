@@ -958,7 +958,7 @@ private fun ExplorerSection(
     var query by remember(root) { mutableStateOf("") }
     // Set from the sidebar: the whole tree's items carrying this colour, shown in place of the folder.
     var colorFilter by remember(root) { mutableStateOf<Rgba?>(null) }
-    var kindFilter by remember(root) { mutableStateOf<EntryKind?>(null) }
+    var kindFilter by remember(root) { mutableStateOf<EntryKind?>(EntryKind.PDF) }
     // Set from the sidebar: what was opened lately, from every folder, in place of the folder.
     var showRecent by remember(root) { mutableStateOf(false) }
     var includeSubfolders by remember(root) { mutableStateOf(true) }
@@ -1097,7 +1097,7 @@ private fun ExplorerSection(
     val withCreated: (BrowseEntry) -> BrowseEntry = { e -> editor.createdOf(e).let { if (it == e.created) e else e.copy(created = it) } }
     val arrange: (List<BrowseEntry>) -> List<BrowseEntry> = remember(view.sortKey, view.descending, view.folders, kindFilter, metaTick) {
         { list ->
-            list.filter { e -> if (e.isDir) view.folders != FolderPlacement.HIDDEN && kindFilter == null else kindOf(e) != EntryKind.CANVAS && (kindFilter == null || kindOf(e) == kindFilter) }
+            list.filter { e -> if (e.isDir) view.folders != FolderPlacement.HIDDEN else kindOf(e) == kindFilter }
                 .map(withCreated)
                 .sortedWith(explorerComparator(view.sortKey, view.descending, foldersFirst = view.folders != FolderPlacement.MIXED) { it.created })
         }
@@ -1422,18 +1422,6 @@ private fun ExplorerSection(
                                         ChoiceMenuItem(g == view.groupBy, onClick = { groupOpen = false; setView(view.copy(groupBy = g)) }) { fg ->
                                             Text(stringResource(g.labelRes), color = fg)
                                         }
-                                    }
-                                }
-                            }
-                        }
-                        var kindOpen by remember { mutableStateOf(false) }
-                        Box {
-                            val k = kindFilter
-                            ExplorerChip(k?.let { words.kinds(it) } ?: stringResource(R.string.all_kinds), k != null, icon = XnotesIcons.filter, trailing = XnotesIcons.chevronDown, labelled = labelled) { kindOpen = true }
-                            DropdownMenu(expanded = kindOpen, onDismissRequest = { kindOpen = false }) {
-                                (listOf<EntryKind?>(null) + listOf(EntryKind.NOTE, EntryKind.PDF)).forEach { option ->
-                                    ChoiceMenuItem(option == kindFilter, onClick = { kindOpen = false; kindFilter = option }) { fg ->
-                                        Text(option?.let { words.kinds(it) } ?: stringResource(R.string.all_kinds), color = fg)
                                     }
                                 }
                             }

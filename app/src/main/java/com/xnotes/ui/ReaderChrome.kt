@@ -61,9 +61,9 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
                     IconButton(onClick = onHome) {
                         Icon(XnotesIcons.home, stringResource(R.string.back_to_home), tint = palette.text.toComposeColor())
                     }
-                    IconButton(onClick = { editor.sidebarVisible = !editor.sidebarVisible }) {
+                    IconButton(onClick = editor::toggleSidebar) {
                         Icon(
-                            XnotesIcons.thumbnails,
+                            XnotesIcons.sidebar,
                             stringResource(R.string.pages),
                             tint = if (editor.sidebarVisible) palette.accent.toComposeColor() else palette.text.toComposeColor(),
                         )

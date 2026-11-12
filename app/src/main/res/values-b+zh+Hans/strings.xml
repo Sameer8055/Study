@@ -602,7 +602,7 @@
     <string name="err_clipboard_no_image">剪贴板中没有可粘贴的图片。</string>
     <string name="err_read_sticker">无法读取贴纸。</string>
     <string name="err_open_that_note">无法打开该笔记。</string>
-    <string name="err_not_Study">该文件不是 Study 文档。</string>
+    <string name="err_not_xnotes">该文件不是 Study 文档。</string>
     <string name="err_open_note">无法打开笔记。</string>
     <string name="note_forked">此笔记已在其他位置更改。你的编辑现已保存在“%1$s”中。</string>
     <string name="canvas_forked">此画布已在其他位置更改。你的编辑现已保存在“%1$s”中。</string>
@@ -686,7 +686,7 @@
     <string name="report_bug">报告问题</string>
     <string name="request_feature">功能建议</string>
     <string name="sponsor">赞助</string>
-    <string name="enjoying_Study">喜欢 Study？</string>
+    <string name="enjoying_xnotes">喜欢 Study？</string>
     <string name="star_on_github">在 GitHub 上加星</string>
     <string name="mit_license">MIT 许可证</string>
     <string name="version_n">版本 %1$s</string>

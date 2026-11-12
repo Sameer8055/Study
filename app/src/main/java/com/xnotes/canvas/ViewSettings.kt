@@ -29,9 +29,9 @@ enum class ViewingMode(val id: String) {
 data class ViewSettings(
     val mode: ViewingMode = ViewingMode.SINGLE,
     /** True = continuous vertical scroll; false = paginated horizontal page-flip. */
-    val verticalScroll: Boolean = true,
+    val verticalScroll: Boolean = false,
     /** Paginated only: pages move up and down freely and pinches never snap to a fit. */
-    val freeMovement: Boolean = false,
+    val freeMovement: Boolean = true,
     val contrast: Int = 100, // 0..200, 100 = untouched
     val invert: Int = 0, // 0..100
     val brightness: Int = 100, // 0..200, 100 = untouched

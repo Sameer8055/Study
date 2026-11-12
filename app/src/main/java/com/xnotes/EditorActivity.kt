@@ -105,9 +105,6 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/** How long the maths waits for the font bytes it measures with before going without. */
-private const val MATH_FONT_WAIT_MS = 1500L
-
 /** Whether the display has a camera cutout (notch/hole-punch). False below API 29, which has no
  *  cutout API; such devices fall back to fullscreen by default. Also false for a context with no
  *  display of its own, which cannot answer the question. */
@@ -303,19 +300,6 @@ private fun EditorScreen(
 ) {
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
-    // The LaTeX renderer resolves its fonts through the composition, so this is the
-    // only place it can be built; the flow reaches it through MathRendering after.
-    val mathDensity = LocalDensity.current
-    // A formula is set one glyph run at a time, and runs like "x" and "=" recur across a note, so
-    // the text measurer keeps far more layouts than its default eight.
-    val mathText = androidx.compose.ui.text.rememberTextMeasurer(cacheSize = 256)
-    val mathFonts = com.xnotes.platform.LatexInternals.defaultFonts()
-    LaunchedEffect(mathDensity, mathText, mathFonts) {
-        // The fonts come a moment before the bytes that measure them exactly; setting formulas between would set them twice.
-        if (mathFonts.mainBytes == null) kotlinx.coroutines.delay(MATH_FONT_WAIT_MS)
-        com.xnotes.platform.MathRendering.install(mathDensity, mathText, mathFonts)
-        editor.refreshFlowMath()
-    }
     // Backstage is the root of the stack; the editor is pushed on top only when a note is open
     // (editor.noteOpen). Every launch starts on backstage.
     var backstageView by remember { mutableStateOf(com.xnotes.ui.BackstageView.HOME) }

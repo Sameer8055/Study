@@ -2728,8 +2728,8 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
             verticalScroll = false,
             freeMovement = true,
         )
-        if (settings.prefs != readerPrefs || settings.viewDefaults != readerView) {
-            settings = settings.copy(prefs = readerPrefs, viewDefaults = readerView)
+        if (settings.prefs != readerPrefs || settings.viewDefaults != readerView || settings.sidebarVisible) {
+            settings = settings.copy(prefs = readerPrefs, viewDefaults = readerView, sidebarVisible = false)
             settingsRepo.save(settings)
         }
         viewDefaults = readerView
@@ -2745,7 +2745,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
         // Render always at 1x (the DPI/supersampling control was removed).
         renderScale = 1.0
         state.renderScale = 1.0
-        sidebarVisible = settings.sidebarVisible
+        sidebarVisible = false
         shapeConfig = settings.shapeConfig
         controller.shapeConfig = settings.shapeConfig
         for (t in ToolDefaults.persistedTools) controller.setToolConfig(t, settings.configFor(t))

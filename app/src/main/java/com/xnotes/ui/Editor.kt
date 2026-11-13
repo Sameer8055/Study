@@ -2727,7 +2727,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
         val readerView = settings.viewDefaults.copy(
             mode = com.xnotes.canvas.ViewingMode.SINGLE,
             verticalScroll = false,
-            freeMovement = true,
+            freeMovement = false,
         )
         if (settings.prefs != readerPrefs || settings.viewDefaults != readerView || settings.sidebarVisible) {
             settings = settings.copy(prefs = readerPrefs, viewDefaults = readerView, sidebarVisible = false)
@@ -5354,7 +5354,8 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
 
     /** Install a just-opened note's View-menu overrides (no persistence — nothing changed yet). */
     private fun installViewOverrides(o: com.xnotes.canvas.ViewOverrides) {
-        viewOverrides = o
+        // Every note inherits the reader-wide page-flow defaults; ignore old per-note values.
+        viewOverrides = o.copy(verticalScroll = null, freeMovement = null)
         applyResolvedViewSettings()
     }
 
@@ -5432,6 +5433,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
     private fun viewSettingsFor(uri: String?): com.xnotes.canvas.ViewSettings = when {
         uri != null && uri == currentUri -> viewSettings
         else -> (viewKey(uri)?.let { viewStates.get(it)?.overrides } ?: com.xnotes.canvas.ViewOverrides())
+            .copy(verticalScroll = null, freeMovement = null)
             .resolve(viewDefaults)
     }
 

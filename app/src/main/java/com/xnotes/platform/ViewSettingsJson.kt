@@ -16,7 +16,7 @@ internal object ViewSettingsJson {
 
     fun write(o: JSONObject, s: ViewSettings): JSONObject = o.apply {
         if (s.mode != ViewingMode.SINGLE) put("mode", s.mode.id)
-        if (!s.verticalScroll) put("verticalScroll", false)
+        if (s.verticalScroll) put("verticalScroll", true)
         if (s.freeMovement) put("freeMovement", true)
         if (s.contrast != 100) put("contrast", s.contrast)
         if (s.invert != 0) put("invert", s.invert)
@@ -31,7 +31,7 @@ internal object ViewSettingsJson {
 
     fun read(o: JSONObject): ViewSettings = ViewSettings(
         mode = ViewingMode.fromId(o.optString("mode", ViewingMode.SINGLE.id)),
-        verticalScroll = o.optBoolean("verticalScroll", true),
+        verticalScroll = o.optBoolean("verticalScroll", false),
         freeMovement = o.optBoolean("freeMovement", false),
         contrast = o.optInt("contrast", 100).coerceIn(0, 200),
         invert = o.optInt("invert", 0).coerceIn(0, 100),

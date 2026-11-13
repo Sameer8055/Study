@@ -28,7 +28,7 @@ android {
         versionCode = 69
         versionName = "0.9.8"
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+            abiFilters += listOf("arm64-v8a")
         }
         externalNativeBuild {
             cmake {

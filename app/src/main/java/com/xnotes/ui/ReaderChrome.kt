@@ -46,8 +46,7 @@ internal fun ReaderChrome(editor: Editor, onHome: () -> Unit) {
             Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Keep the app's own View menu immediately to the left of page navigation.
-            ViewButton(editor)
+            // View settings are fixed to the reader-wide defaults; no View menu is shown.
             IconButton(onClick = editor::prevPage, enabled = editor.pageIndex > 0) {
                 Icon(XnotesIcons.prev, stringResource(R.string.previous_page), tint = palette.text.toComposeColor())
             }

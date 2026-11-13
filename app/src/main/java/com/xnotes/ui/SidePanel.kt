@@ -132,7 +132,7 @@ fun SidePanel(
     }
     Column(
         Modifier
-            .width(252.dp)
+            .width(300.dp)
             .fillMaxHeight()
             .background(palette.panel.toComposeColor()),
     ) {
@@ -351,7 +351,7 @@ private val LIST_PAD = 8.dp
 private val ROW_GAP = 10.dp
 
 /** A thumbnail's width in the panel. */
-private val THUMB_W = 178.dp
+private val THUMB_W = 232.dp
 
 /** Selected pages being carried; the one pressed lay at [from] in the panel and shows as [bitmap] at its [aspect]. */
 private class PageDrag(val pages: List<Page>, val from: Offset, val bitmap: ImageBitmap?, val aspect: Float)

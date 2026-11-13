@@ -175,10 +175,12 @@ class EditorActivity : ComponentActivity() {
             val ed = remember { Editor(context).also { editor = it } }
             LaunchedEffect(ed.fullscreen) { applyFullscreen(ed.fullscreen) }
             var ready by remember { mutableStateOf(false) }
+            val logoIntro = remember { Animatable(0f) }
             LaunchedEffect(Unit) {
                 if (ed.browseRoot == null) ed.useInternalStorage() // use app storage by default; no first-run folder prompt
                 ready = true // show Home immediately; do not restore an editing/canvas session
                 ed.prewarmBackstage() // warm explorer caches after the first frame
+                logoIntro.animateTo(1f, tween(durationMillis = 820))
             }
             XnotesTheme(ed.palette, ed.cornerStyle) {
                 CompositionLocalProvider(com.xnotes.ui.LocalToolbarLook provides ed.toolbarLook) {
@@ -194,6 +196,24 @@ class EditorActivity : ComponentActivity() {
                             SideEffect { launched = true }
                         }
                         com.xnotes.ui.EyedropperOverlay()
+                        if (logoIntro.value < 1f) {
+                            val fade = ((1f - logoIntro.value) / 0.22f).coerceIn(0f, 1f)
+                            Box(
+                                Modifier.fillMaxSize().background(androidx.compose.ui.graphics.Color.Black),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.app_logo),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(112.dp).graphicsLayer {
+                                        alpha = fade
+                                        val scale = 0.90f + 0.10f * logoIntro.value
+                                        scaleX = scale
+                                        scaleY = scale
+                                    },
+                                )
+                            }
+                        }
                     }
                 }
             }

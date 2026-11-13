@@ -79,3 +79,7 @@ git clone https://github.com/shardulvs/xnotes-android.git
 cd xnotes-android
 JAVA_HOME=/path/to/jdk-17 ./gradlew assembleDebug
 ```
+
+## PDF reader defaults
+
+The `pdf-reader-only` build uses horizontal paginated navigation with free page movement disabled. These defaults apply across notes, the View controls are hidden, and the launcher uses the supplied circular app logo.

@@ -2723,6 +2723,7 @@ class Editor(context: Context, val pane: Pane = Pane.PRIMARY) : ToolPopupHost, S
             stylusButton1Tap = "none",
             stylusButton2Tap = "none",
             volumeKeysTurnPages = true,
+            hidePageBorders = true,
         )
         val readerView = settings.viewDefaults.copy(
             mode = com.xnotes.canvas.ViewingMode.SINGLE,

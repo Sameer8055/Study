@@ -132,7 +132,7 @@ fun SidePanel(
     }
     Column(
         Modifier
-            .width(224.dp)
+            .width(252.dp)
             .fillMaxHeight()
             .background(palette.panel.toComposeColor()),
     ) {
@@ -351,7 +351,7 @@ private val LIST_PAD = 8.dp
 private val ROW_GAP = 10.dp
 
 /** A thumbnail's width in the panel. */
-private val THUMB_W = 150.dp
+private val THUMB_W = 178.dp
 
 /** Selected pages being carried; the one pressed lay at [from] in the panel and shows as [bitmap] at its [aspect]. */
 private class PageDrag(val pages: List<Page>, val from: Offset, val bitmap: ImageBitmap?, val aspect: Float)
@@ -469,7 +469,7 @@ private fun PageThumb(
                 // Render only once the panel has stopped moving (see the panel-wide `settled` flag in
                 // PagesTab): a scroll keeps `settled` false, so rows swept past never render — the
                 // producer relaunches and renders this row when motion settles.
-                value = editor.pageThumbnail(page, 300)
+                value = editor.pageThumbnail(page, 360)
             }
             // not cached and not settled: leave value as-is (placeholder); relaunch on settle renders it.
         }

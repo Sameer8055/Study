@@ -148,6 +148,12 @@ class EditorActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Warm PDFium off the UI thread so the first PDF opens without paying library-init cost.
+        Thread({ com.xnotes.platform.PdfiumThread.shared }, "study-pdfium-prewarm").apply {
+            isDaemon = true
+            priority = (Thread.NORM_PRIORITY - 1).coerceAtLeast(Thread.MIN_PRIORITY)
+            start()
+        }
         com.xnotes.platform.FontCatalog.init(this)
         com.xnotes.platform.TemplateLibrary.init(this)
         com.xnotes.ui.AudioPlayback.init(this)

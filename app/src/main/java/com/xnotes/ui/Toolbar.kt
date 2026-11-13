@@ -244,8 +244,8 @@ private fun ToolbarItemView(
         }
         ToolbarItem.STYLES -> StylesButton(editor, onImportTemplate)
         ToolbarItem.MARGINS -> MarginsButton(editor)
-        // View settings are fixed globally for this PDF-reader build; keep the toolbar clean.
-        ToolbarItem.VIEW -> Unit
+        // Keep View beside page navigation so the reader controls remain directly accessible.
+        ToolbarItem.VIEW -> ViewButton(editor)
 
         ToolbarItem.ZOOM -> {
             ToolbarIcon(XnotesIcons.zoomOut, stringResource(R.string.zoom_out), enabled = !editor.zoomLocked, shortcut = Keys.ZOOM_OUT) { editor.zoomOut() }

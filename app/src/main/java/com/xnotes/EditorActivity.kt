@@ -180,7 +180,9 @@ class EditorActivity : ComponentActivity() {
                 if (ed.browseRoot == null) ed.useInternalStorage() // use app storage by default; no first-run folder prompt
                 ready = true // show Home immediately; do not restore an editing/canvas session
                 ed.prewarmBackstage() // warm explorer caches after the first frame
-                logoIntro.animateTo(1f, tween(durationMillis = 820))
+            }
+            LaunchedEffect(ready) {
+                if (ready) logoIntro.animateTo(1f, tween(durationMillis = 820))
             }
             XnotesTheme(ed.palette, ed.cornerStyle) {
                 CompositionLocalProvider(com.xnotes.ui.LocalToolbarLook provides ed.toolbarLook) {
